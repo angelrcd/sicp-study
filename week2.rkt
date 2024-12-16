@@ -62,3 +62,15 @@
 (define (accumulate-product term a next b)
   (accumulate (lambda (x y) (* x y)) 1 term a next b)
 )
+
+;; EXERCISE 1.33
+(define (filtered-accumulate combiner null-value term a next b predicate)
+  (if (> a b)
+    null-value
+    (combiner (if (predicate a) (term a) null-value) (filtered-accumulate combiner null-value term (next a) next b predicate)))
+)
+
+;; SUM PRIMES
+(define (sum-square-primes a b)
+  (filtered-accumulate (lambda (x y) (+ x y)) 0 (lambda (x) (* x x)) a (lambda (x) (+ x 1)) b prime?)
+)
